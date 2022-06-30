@@ -1,6 +1,14 @@
 import classes from './CartItem.module.css';
 
-const CartItem = (props) => {
+export type CartItemProps = {
+    price: number
+    name: string
+    amount: number
+    onRemove: () => void
+    onAdd: () => void
+}
+
+const CartItem = (props: CartItemProps) => {
   const price = `$${props.price.toFixed(2)}`;
 
   return (
