@@ -1,4 +1,12 @@
-export const DUMMY_MEALS = [
+
+export type MealItemType = {
+  id: string
+  name: string
+  description: string
+  price: number
+}
+
+export const DUMMY_MEALS: MealItemType[] = [
   {
     id: 'm1',
     name: 'Sushi',
