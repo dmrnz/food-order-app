@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {MealItemType} from "./dummy-meals";
 import classes from "./MealItem.module.css";
 import MealItemForm from "./MealItemForm";
+import {MealItemType} from "../../types";
 
 type MealItemParams = { key: string } & Omit<MealItemType, "id">;
 

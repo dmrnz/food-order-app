@@ -1,10 +1,4 @@
-
-export type MealItemType = {
-  id: string
-  name: string
-  description: string
-  price: number
-}
+import {MealItemType} from "../../types";
 
 export const DUMMY_MEALS: MealItemType[] = [
   {
