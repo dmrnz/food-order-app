@@ -1,9 +1,7 @@
 import classes from './CartItem.module.css';
+import {CartItemType} from "../../types";
 
-export type CartItemProps = {
-    price: number
-    name: string
-    amount: number
+export type CartItemProps = Omit<CartItemType, "id"> & {
     onRemove: () => void
     onAdd: () => void
 }

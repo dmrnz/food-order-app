@@ -1,4 +1,4 @@
-import React, {InputHTMLAttributes} from 'react';
+import React, {ForwardedRef, InputHTMLAttributes} from 'react';
 
 import classes from "./Input.module.css";
 
@@ -7,13 +7,13 @@ export type InputProps = {
     input: InputHTMLAttributes<HTMLInputElement>
 }
 
-const Input = (props: InputProps) => {
+const Input = React.forwardRef((props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
     return (
         <div className={classes.input}>
             <label htmlFor={props.input.id}>{props.label}</label>
-           <input {...props.input}/> 
+           <input ref={ref} {...props.input}/> 
         </div>
     );
-};
+});
 
 export default Input;

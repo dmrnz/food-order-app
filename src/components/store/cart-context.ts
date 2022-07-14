@@ -1,5 +1,5 @@
 import React from "react";
-import {CartItem} from "../../types";
+import {CartItemType} from "../../types";
 
 // noinspection JSUnusedLocalSymbols
 const CartContext = React.createContext({
@@ -7,9 +7,9 @@ const CartContext = React.createContext({
     showCart: () => {},
     hideCart: () => {},
 
-    items: [] as CartItem[],
-    totalAmount: 0,
-    addItem: (item: CartItem) => {},
+    items: [] as CartItemType[],
+    totalCost: 0,
+    addItem: (item: CartItemType) => {},
     removeItem: (id: string) => {},
 });
 

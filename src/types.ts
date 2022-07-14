@@ -5,6 +5,9 @@ export type MealItemType = {
   price: number
 }
 
-export type CartItem = {
+export type CartItemType = {
+  id: string
+  name: string
   amount: number
+  price: number
 }
