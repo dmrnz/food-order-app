@@ -7,61 +7,65 @@ const defaultCartState = {
     totalCost: 0
 };
 
-const cartReducer = (state: typeof defaultCartState, action: { type: "ADD" | "REMOVE", value: unknown }) => {
+const cartReducer = (state: typeof defaultCartState, action: { type: "ADD" | "REMOVE" | "CLEAR", value?: CartItemType | string }) => {
     const actionType = action.type;
-    if (actionType === "ADD") {
-        const newItem = action.value as CartItemType;
-        const existingItems = state.items;
-
-        const existingCartItemIndex = existingItems.findIndex(existingItem => existingItem.id === newItem.id);
-        const existingCartItem = existingItems[existingCartItemIndex];
-        let updatedItems;
-
-        if (existingCartItem) {
-            const updatedItem = {
-                ...existingCartItem,
-                amount: existingCartItem.amount + newItem.amount
-            };
-            updatedItems = [...existingItems];
-            updatedItems[existingCartItemIndex] = updatedItem;
-        } else {
-            updatedItems = existingItems.concat(newItem);
-        }
-
-        const updatedTotalCost = state.totalCost + newItem.amount * newItem.price;
-
-        return {
-            items: updatedItems,
-            totalCost: updatedTotalCost
-        };
-    }
-
-    if (actionType === "REMOVE") {
-        const id = action.value as string;
-        const existingItems = state.items;
-        
-        const existingCartItemIndex = existingItems.findIndex(existingItem => existingItem.id === id);
-        const existingCartItem = existingItems[existingCartItemIndex];
-
-        let updatedItems;
-
-        if (existingCartItem.amount > 1) {
-            const updatedItem = {
-                ...existingCartItem,
-                amount: existingCartItem.amount - 1
+    switch (action.type) {
+        case "ADD": {
+            const newItem = action.value as CartItemType;
+            const existingItems = state.items;
+    
+            const existingCartItemIndex = existingItems.findIndex(existingItem => existingItem.id === newItem.id);
+            const existingCartItem = existingItems[existingCartItemIndex];
+            let updatedItems;
+    
+            if (existingCartItem) {
+                const updatedItem = {
+                    ...existingCartItem,
+                    amount: existingCartItem.amount + newItem.amount
+                };
+                updatedItems = [...existingItems];
+                updatedItems[existingCartItemIndex] = updatedItem;
+            } else {
+                updatedItems = existingItems.concat(newItem);
             }
-            updatedItems = [...existingItems];
-            updatedItems[existingCartItemIndex] = updatedItem;
-        } else {
-            updatedItems = [...existingItems].filter(item => item.id !== id);
+    
+            const updatedTotalCost = state.totalCost + newItem.amount * newItem.price;
+    
+            return {
+                items: updatedItems,
+                totalCost: updatedTotalCost
+            };
         }
-
-        const updatedTotalCost = state.totalCost - existingCartItem.price;
-
-        return {
-            items: updatedItems,
-            totalCost: updatedTotalCost
-        };
+        case "REMOVE": {
+            const id = action.value as string;
+            const existingItems = state.items;
+            
+            const existingCartItemIndex = existingItems.findIndex(existingItem => existingItem.id === id);
+            const existingCartItem = existingItems[existingCartItemIndex];
+    
+            let updatedItems;
+    
+            if (existingCartItem.amount > 1) {
+                const updatedItem = {
+                    ...existingCartItem,
+                    amount: existingCartItem.amount - 1
+                }
+                updatedItems = [...existingItems];
+                updatedItems[existingCartItemIndex] = updatedItem;
+            } else {
+                updatedItems = [...existingItems].filter(item => item.id !== id);
+            }
+    
+            const updatedTotalCost = state.totalCost - existingCartItem.price;
+    
+            return {
+                items: updatedItems,
+                totalCost: updatedTotalCost
+            };
+        }
+        case "CLEAR": {
+            return defaultCartState;
+        }
     }
 
     return defaultCartState;
@@ -87,6 +91,10 @@ const CartContextProvider = (props: PropsWithChildren) => {
         dispatchCartAction({type: "REMOVE", value: id})
     };
 
+    const clearCartHandler = () => {
+        dispatchCartAction({type: "CLEAR"})
+    }
+
     const cartContext = {
         isVisible: isVisible,
         showCart: showCartHandler,
@@ -95,8 +103,9 @@ const CartContextProvider = (props: PropsWithChildren) => {
         items: cartState.items,
         totalCost: cartState.totalCost,
         addItem: addItemHandler,
-        removeItem: removeItemHandler
-    };
+        removeItem: removeItemHandler,
+        clearCart: clearCartHandler
+    } as const;
 
     return <CartContext.Provider value={cartContext}>
         {props.children}

@@ -11,3 +11,8 @@ export type CartItemType = {
   amount: number
   price: number
 }
+
+export type FetchedMeals = {
+  [key: string]: Omit<MealItemType, "id">
+}
+
